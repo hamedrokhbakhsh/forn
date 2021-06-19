@@ -1,0 +1,52 @@
+<p-toolbar styleClass="p-mb-4">
+  <ng-template pTemplate="left">
+    <button pButton pRipple label="New" icon="pi pi-plus"
+            routerLink="/form"
+            class="p-button-success mr-2"></button>
+  </ng-template>
+
+</p-toolbar>
+<p-table #dt [value]="data" [rows]="10"
+         [(selection)]="selections" [rowHover]="true" dataKey="id"
+         [paginator]="true">
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-model>
+    <tr *ngIf="!data || data.length ==0">
+      <td [attr.colspan]="columns.length + 2" class="text-center">Empty data list.</td>
+    </tr>
+    <tr>
+      <td  *ngFor="let col of columns">
+        <span class="text-truncate d-block" *ngIf="col.type==0">{{model[col.field]}}</span>
+        <span class="text-truncate d-block" *ngIf="col.type==1">{{model[col.field]}}</span>
+        <span class="text-truncate d-block" *ngIf="col.type==2">{{model[col.field]|date:'YYYY-MM-dd'}}</span>
+        <span *ngIf="col.type==3">
+          {{model[col.field+'_from']|date:'YYYY-MM-dd'}} - {{model[col.field+'_to']|date:'YYYY-MM-dd'}}
+        </span>
+        <span *ngIf="col.type==4">
+          {{model[col.field+'_from']}} - {{model[col.field+'_to']}}
+        </span>
+        <span class="text-truncate d-block" *ngIf="col.type==5">{{model[col.field]}}</span>
+        <span class="text-truncate d-block" *ngIf="col.type==6" [innerHTML]="model[col.field]"></span>
+        <span class="text-truncate d-block" *ngIf="col.type==7">{{model[col.field]}}</span>
+        <span class="text-truncate d-block" *ngIf="col.type==8">
+          <ng-container *ngFor="let option of col.options">
+            <ng-container *ngIf="option.key==model[col.field]">{{option.title}}</ng-container>
+          </ng-container>
+        </span>
+      </td>
+      <td>
+        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success ml-2 mr-2"
+                [routerLink]="['/form',model.id]"></button>
+        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                (click)="deleteModel(model)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

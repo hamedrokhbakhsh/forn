@@ -1,0 +1,59 @@
+<div class="m-5">
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+      <ng-container *ngFor="let control of formMetaData">
+        <div *ngIf="control.type!=3 && control.type!=4" class="p-field col-12 mb-2">
+          <label [for]="control.name">{{control.label}}:</label>
+          <input class="w-100" *ngIf="control.type==0" type="text" [id]="control.name" pInputText
+                 [formControlName]="control.name">
+          <input class="w-100" *ngIf="control.type==5" type="text" [id]="control.name" pInputTextarea
+                 [formControlName]="control.name">
+          <p-editor *ngIf="control.type==6" [formControlName]="control.name" [id]="control.name"
+                    [style]="{'height':'320px'}"></p-editor>
+          <p-calendar styleClass="w-100" *ngIf="control.type==2" [formControlName]="control.name"
+                      [id]="control.name"></p-calendar>
+          <p-inputMask class="w-100" *ngIf="control.type==7" [formControlName]="control.name" [id]="control.name"
+                       [mask]="control.pattern?control.pattern:''"></p-inputMask>
+          <p-inputNumber class="w-100" *ngIf="control.type==1" [formControlName]="control.name"
+                         [id]="control.name"></p-inputNumber>
+          <p-dropdown styleClass="w-100" *ngIf="control.type==8 && control.options" [formControlName]="control.name"
+                      [id]="control.name" [options]="control.options" optionLabel="title"
+                      optionValue="key"></p-dropdown>
+
+          <app-validator-message [id]="control.name+'_help'" [min]="control.min" [max]="control.max"
+                                 [control]="form.get(control.name)"></app-validator-message>
+          <small *ngIf="control.description" [id]="control.name+'-help'">{{control.description}}</small>
+        </div>
+        <ng-container *ngIf="control.type==3 || control.type==4">
+          <div class="p-field col-12 col-md-6 mb-2">
+            <label [for]="control.name+'_from'">{{control.label}} From:</label>
+            <p-calendar styleClass="w-100" *ngIf="control.type==3" [formControlName]="control.name+'_from'"
+                        [id]="control.name+'_from'"></p-calendar>
+            <p-inputNumber class="w-100" *ngIf="control.type==4" [formControlName]="control.name+'_from'"
+                           [id]="control.name+'_from'"></p-inputNumber>
+            <app-validator-message [id]="control.name+'_from_help'" [min]="control.min" [max]="control.max"
+                                   [control]="form.get(control.name+'_from')"></app-validator-message>
+          </div>
+          <div class="p-field col-12 col-md-6 mb-2">
+            <label [for]="control.name+'_to'">To:</label>
+            <p-calendar styleClass="w-100" *ngIf="control.type==3" [formControlName]="control.name+'_to'"
+                        [id]="control.name+'_to'"></p-calendar>
+            <p-inputNumber class="w-100" *ngIf="control.type==4" [formControlName]="control.name+'_to'"
+                           [id]="control.name+'_to'"></p-inputNumber>
+            <app-validator-message [id]="control.name+'_to_help'" [min]="control.min" [max]="control.max"
+                                   [control]="form.get(control.name+'_to')"></app-validator-message>
+          </div>
+          <small *ngIf="control.description" [id]="control.name+'-help'">{{control.description}}</small>
+        </ng-container>
+      </ng-container>
+      <div>
+        <button pButton pRipple label="Save" icon="pi pi-save"
+                type="submit"
+                class="p-button-success mt-5"></button>
+        <button pButton pRipple label="Save" icon="pi pi-arrow-left"
+                routerLink="/"
+                class="p-button-danger mt-5 ml-2"></button>
+      </div>
+    </div>
+  </form>
+</div>
